@@ -27,6 +27,9 @@ class Game {
     /** Display resolution height. */
     height = 240;
 
+    /** Tells if game should either render pixel perfect or not. */
+    pixelPerfect = true;
+
     displayWidth = 0;
     displayHeight = 0;
 
@@ -48,12 +51,17 @@ class Game {
     }
 
     setupDisplay() {
+        // Handles display setup if no canvas element is provided in constructor.
         if(!this.element) {
             this.element = document.createElement('CANVAS');
             this.element.id = `game_${(Math.random()).toString(16).replace('.','')}`;
 
             const $parent = this.parentElement || document.body;
             $parent.appendChild(this.element);
+        }
+
+        if(this.pixelPerfect) {
+            this.element.style['image-rendering'] = 'pixelated';
         }
 
         this.display = this.element.getContext('2d');
