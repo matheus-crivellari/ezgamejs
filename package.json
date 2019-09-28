@@ -1,0 +1,15 @@
+{
+  "name": "easygamejs",
+  "version": "1.0.0",
+  "description": "A simple JavaScript game engine.",
+  "main": "index.js",
+  "scripts": {
+  },
+  "keywords": [
+    "game",
+    "engine",
+    "javascript"
+  ],
+  "author": "Matheus Crivellari <matheus.acrivellari@gmail.com>",
+  "license": "MIT"
+}

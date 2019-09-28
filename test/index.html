@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <script src="../src/game.class.js"></script>
+    <script src="../src/easygame.js"></script>
+
+    <title>EasyGameJS</title>
+</head>
+<body>
+    <h1>EasyGameJS</h1>
+    <canvas id="display"></canvas>
+    <script>
+        const canvas = document.getElementById('display');
+        const game = new Game(canvas);
+        game.displayWidth  = 640;
+        game.displayHeight = 480;
+
+        const instance = EasyGame.create(game);
+        console.log(instance);
+    </script>
+</body>
+</html>
