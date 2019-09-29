@@ -62,16 +62,28 @@ class Game {
         this.displayHeight = this.height;
     }
 
+    /**
+     * Kills the game loop process. Must create the game again to restart.
+     **/
     kill() {
         this.alive = false;
-        console.log('killou');
     }
 
+    /**
+     * Pauses game loop process.
+     */
     pause() {
-        this.paused  = true;
-        this.playing = false;
+        if (this.playing) {
+            this.paused  = true;
+            this.playing = false;
+        } else {
+            this.play();
+        }
     }
 
+    /**
+     * Resumes game loop process.
+     */
     play() {
         this.paused  = false;
         this.playing = true;
@@ -160,9 +172,12 @@ class Game {
         this.deltaTime   = timestamp - this.elapsedTime;
         this.elapsedTime = timestamp;
 
-        this.$update();
-        this.$lateUpdate();
-        this.$render();
+        if(this.playing) {
+            this.$update();
+            this.$lateUpdate();
+            this.$render();
+        }
+
         this.$gui();
     }
 }
