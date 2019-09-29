@@ -30,6 +30,15 @@ class Game {
     /** Tells if game should either render pixel perfect or not. */
     pixelPerfect = true;
 
+    /** Tells if game is whether paused or not. */
+    paused  = false;
+
+    /** Tells if game is whether playing or not. */
+    playing = true;
+
+    /** Tells if game processing is either alive or dead. */
+    alive = true;
+
     elapsedTime = 0;
     deltaTime   = 0;
 
@@ -53,6 +62,22 @@ class Game {
         this.displayHeight = this.height;
     }
 
+    kill() {
+        this.alive = false;
+        console.log('killou');
+    }
+
+    pause() {
+        this.paused  = true;
+        this.playing = false;
+    }
+
+    play() {
+        this.paused  = false;
+        this.playing = true;
+    }
+
+    /** Setup game display before starting the game. */
     setupDisplay() {
         // Handles display setup if no canvas element is provided in constructor.
         if(!this.element) {
@@ -95,10 +120,36 @@ class Game {
      */
     lateUpdate = () => {};
 
-    /**
-     * User defined callback for game objects rendering.
-     */
+    /** User defined callback for game objects rendering. */
     render = () => {};
+
+    /** User defined callback for game gui rendering. */
+    gui = () => {};
+
+    $input() {
+        this.element.addEventListener('keyup', (event) => {
+
+        });
+    }
+
+    $update() {
+        // TODO perform game object list's update.
+        this.update.apply(this);
+    }
+
+    $lateUpdate() {
+        // TODO perform game object list's late update.
+        this.lateUpdate.apply(this);
+    }
+
+    $render() {
+        // TODO render game object list.
+        this.render.apply(this);
+    }
+
+    $gui() {
+        this.gui.apply(this);
+    }
 
     /**
      * Executes all logic updates once per frame.
@@ -109,9 +160,9 @@ class Game {
         this.deltaTime   = timestamp - this.elapsedTime;
         this.elapsedTime = timestamp;
 
-        this.input();
-        this.update();
-        this.lateUpdate();
-        this.render();
+        this.$update();
+        this.$lateUpdate();
+        this.$render();
+        this.$gui();
     }
 }

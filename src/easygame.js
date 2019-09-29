@@ -12,17 +12,19 @@ class EasyGame {
      * @param {Game} game instance of a game definition class.
      * @returns Game closure.
      */
-    static create(game) {
+    static start(game) {
 
         return ((gameInstance) => {
             gameInstance.setupDisplay();
 
-            const callback = (timestamp) => {
+            const loopFn = (timestamp) => {
                 gameInstance.tick(timestamp);
-                window.requestAnimationFrame(callback);
+
+                if(gameInstance.alive)
+                    window.requestAnimationFrame(loopFn);
             };
 
-            window.requestAnimationFrame(callback);
+            window.requestAnimationFrame(loopFn);
 
         })(game);
     }
