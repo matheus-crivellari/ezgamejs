@@ -30,6 +30,9 @@ class Game {
     /** Tells if game should either render pixel perfect or not. */
     pixelPerfect = true;
 
+    elapsedTime = 0;
+    deltaTime   = 0;
+
     displayWidth = 0;
     displayHeight = 0;
 
@@ -96,4 +99,19 @@ class Game {
      * User defined callback for game objects rendering.
      */
     render = () => {};
+
+    /**
+     * Executes all logic updates once per frame.
+     *
+     * @param {Number} timestamp Elapsed time since game started.
+     */
+    tick(timestamp) {
+        this.deltaTime   = timestamp - this.elapsedTime;
+        this.elapsedTime = timestamp;
+
+        this.input();
+        this.update();
+        this.lateUpdate();
+        this.render();
+    }
 }

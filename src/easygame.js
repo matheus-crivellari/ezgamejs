@@ -17,6 +17,13 @@ class EasyGame {
         return ((gameInstance) => {
             gameInstance.setupDisplay();
 
+            const callback = (timestamp) => {
+                gameInstance.tick(timestamp);
+                window.requestAnimationFrame(callback);
+            };
+
+            window.requestAnimationFrame(callback);
+
         })(game);
     }
 }
