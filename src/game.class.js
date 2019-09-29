@@ -10,10 +10,10 @@ class Game {
      * Stores the reference for canvase's DOM
      * element where the game will be rendered.
      */
-    element = null;
+    domElement = null;
 
     /** Stores the reference for canvase's DOM parent element. */
-    parentElement = null;
+    parentDomElement = null;
 
     /**
      * Stores the reference for canvase's 2d
@@ -51,10 +51,10 @@ class Game {
      * @param {DOMElement} element Canvas DOM element.
      */
     constructor(element, width, height) {
-        this.element = element;
+        this.domElement = element;
 
-        if(this.element)
-            this.display = this.element.getContext('2d');
+        if(this.domElement)
+            this.display = this.domElement.getContext('2d');
 
         this.width   = width  || this.width;
         this.height  = height || this.height;
@@ -92,42 +92,42 @@ class Game {
     /** Setup game display before starting the game. */
     setupDisplay() {
         // Handles display setup if no canvas element is provided in constructor.
-        if(!this.element) {
-            this.element = document.createElement('CANVAS');
-            this.element.id = `game_${(Math.random()).toString(16).replace('.','')}`;
+        if(!this.domElement) {
+            this.domElement = document.createElement('CANVAS');
+            this.domElement.id = `game_${(Math.random()).toString(16).replace('.','')}`;
 
-            const $parent = this.parentElement || document.body;
-            $parent.appendChild(this.element);
+            const $parent = this.parentDomElement || document.body;
+            $parent.appendChild(this.domElement);
         }
 
         if(this.pixelPerfect) {
-            this.element.style['image-rendering'] = 'pixelated';
+            this.domElement.style['image-rendering'] = 'pixelated';
         }
 
-        this.display = this.element.getContext('2d');
+        this.display = this.domElement.getContext('2d');
 
-        this.element.width  = this.width;
-        this.element.height = this.height;
+        this.domElement.width  = this.width;
+        this.domElement.height = this.height;
 
-        this.element.style.width = `${this.displayWidth}px`;
-        this.element.style.height = `${this.displayHeight}px`;
+        this.domElement.style.width = `${this.displayWidth}px`;
+        this.domElement.style.height = `${this.displayHeight}px`;
 
         this.display.fillStyle = '#000';
         this.display.fillRect(0,0, this.width, this.height);
     }
 
     /**
-     * User defined callback for internal game input logic.
+     * User defined callback for game input logic.
      */
     input = () => {};
 
     /**
-     * User defined callback for internal game logic udpate.
+     * User defined callback for game logic udpate.
      */
     update = () => {};
 
     /**
-     * User defined callback for internal game logic update. This update runs
+     * User defined callback for game logic update. This update runs
      * after all elements were updated and before the render cycle.
      */
     lateUpdate = () => {};
@@ -138,27 +138,30 @@ class Game {
     /** User defined callback for game gui rendering. */
     gui = () => {};
 
+    /** Handles game internal input logic. */
     $input() {
-        this.element.addEventListener('keyup', (event) => {
-
-        });
+        // TODO perform game internal input logic.
     }
 
+    /** Handles game internal update logic. */
     $update() {
         // TODO perform game object list's update.
         this.update.apply(this);
     }
 
+    /** Handles game internal late update logic. */
     $lateUpdate() {
         // TODO perform game object list's late update.
         this.lateUpdate.apply(this);
     }
 
+    /** Handles game internal render logic. */
     $render() {
         // TODO render game object list.
         this.render.apply(this);
     }
 
+    /** Handles game internal gui render logic. */
     $gui() {
         this.gui.apply(this);
     }
