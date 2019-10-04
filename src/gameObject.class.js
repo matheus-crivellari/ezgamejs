@@ -38,8 +38,8 @@ class GameObject {
     }
 
     /** Handles game object's internal rendering logic. */
-    $render() {
-        this.render.apply(this, [this]);
+    $render(displayRef) {
+        this.render.apply(this, [this, displayRef]);
     }
 
     /** Handles game object's internal gui rendering logic. */
@@ -52,6 +52,7 @@ class GameObject {
         return { width: this.width, height: this.height };
     }
 
+    /** Game object's position getter */
     get position() {
         return { x: this.x, y: this.y };
     }

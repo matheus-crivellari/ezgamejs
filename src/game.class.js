@@ -37,7 +37,10 @@ class Game {
     playing = true;
 
     /** Tells if game processing is either alive or dead. */
-    alive = true;
+    $alive = true;
+
+    /** Game object queue. This is for update and rendering. */
+    gameObjects = [];
 
     elapsedTime = 0;
     deltaTime   = 0;
@@ -62,11 +65,21 @@ class Game {
         this.displayHeight = this.height;
     }
 
+    add(gameObject) {
+        if(this.gameObjects.indexOf(gameObject) == -1)
+            this.gameObjects.push(gameObject);
+    }
+
+    remove(gameObject) {
+        const index = this.gameObjects.indexOf(gameObject);
+        return this.gameObjects.splice(index,1);
+    }
+
     /**
      * Kills the game loop process. Must create the game again to restart.
      **/
     kill() {
-        this.alive = false;
+        this.$alive = false;
     }
 
     /**
@@ -158,8 +171,14 @@ class Game {
 
     /** Handles game internal render logic. */
     $render() {
-        // TODO render game object list.
-        this.render.apply(this, [this]);
+        const x = 0, y = 0, { width: w, height: h } = this;
+
+        this.display.clearRect(x, y, w, h);
+        this.display.fillStyle = '#000';
+        this.display.fillRect(x, y, w, h);
+
+        this.gameObjects.map((gameObject) => gameObject.$render(this.display));
+        this.render.apply(this, [this, this.display]);
     }
 
     /** Handles game internal gui render logic. */
