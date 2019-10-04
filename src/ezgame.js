@@ -20,7 +20,7 @@ class EzGame {
             const loopFn = (timestamp) => {
                 gameInstance.tick(timestamp);
 
-                if(gameInstance.alive)
+                if(gameInstance.$alive)
                     window.requestAnimationFrame(loopFn);
             };
 
