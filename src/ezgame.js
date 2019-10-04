@@ -28,4 +28,11 @@ class EzGame {
 
         })(game);
     }
+
+    /**
+     * Generates a random identification string to be used inside game engine.
+     */
+    static randomId() {
+        return (new Date().getTime()).toString(16).replace('.','');
+    }
 }

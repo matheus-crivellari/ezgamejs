@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <script src="../src/game.class.js"></script>
+    <script src="../src/gameObject.class.js"></script>
     <script src="../src/ezgame.js"></script>
 
     <title>EzGameJS</title>
@@ -17,6 +18,13 @@
     <p style="margin-top: 0"><small>Web Game development made simple.</small></p>
     <canvas id="display"></canvas>
     <script>
+        const pad = new GameObject('pad', 20, 20);
+        pad.update = (instance) => {
+            console.log('pad', 'update', this);
+        };
+
+        console.log(pad.hitBox);
+
         const canvas = document.querySelector('#display');
         const game = new Game(canvas);
         game.displayWidth  = 640;

@@ -93,8 +93,9 @@ class Game {
     setupDisplay() {
         // Handles display setup if no canvas element is provided in constructor.
         if(!this.domElement) {
+            const id = EzGame.randomId();
             this.domElement = document.createElement('CANVAS');
-            this.domElement.id = `game_${(Math.random()).toString(16).replace('.','')}`;
+            this.domElement.id = `$game_${id}`;
 
             const $parent = this.parentDomElement || document.body;
             $parent.appendChild(this.domElement);
