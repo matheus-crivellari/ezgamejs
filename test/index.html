@@ -8,6 +8,7 @@
     <script src="../src/game.class.js"></script>
     <script src="../src/gameObject.class.js"></script>
     <script src="../src/ezgame.js"></script>
+    <script src="../src/debug.class.js"></script>
 
     <title>EzGameJS</title>
 </head>
@@ -27,21 +28,22 @@
             // Here goes aditional game logic.
         }
 
-        game.gui = (instance) => {
+        game.render = (instance) => {
             // Here goes aditional gui rendering logic.
         }
 
         const padw = 30, padh = 10;
-        const pad = new GameObject(
-            'pad',
-            padw, 10,
-            game.width / 2 + padw / 2,
+        const pad = new GameObject('pad', padw, padh,
+            game.width / 2 - padw / 2,
             game.height - padh * 2,
         );
 
-        pad.update = (instance) => {
-            console.log('pad', 'update', this);
+        pad.color = '#f00f';
+        pad.render = ($this, display) => {
+            Debug.render($this, display, pad.color);
         };
+
+        game.add(pad);
 
         EzGame.start(game);
     </script>
