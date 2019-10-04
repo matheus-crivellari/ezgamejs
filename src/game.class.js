@@ -5,6 +5,8 @@
  * declaring a game with minimal implementation;
  */
 class Game {
+    /** Internal identification string */
+    $id;
 
     /**
      * Stores the reference for canvase's DOM
@@ -54,6 +56,8 @@ class Game {
      * @param {DOMElement} element Canvas DOM element.
      */
     constructor(element, width, height) {
+        this.$id = EzGame.randomId();
+
         this.domElement = element;
 
         if(this.domElement)

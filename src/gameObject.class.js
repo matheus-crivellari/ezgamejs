@@ -1,4 +1,5 @@
 class GameObject {
+    $id;
     name;
     x = 0;
     y = 0;
@@ -6,9 +7,8 @@ class GameObject {
     height = 10;
 
     constructor(name, width, height, x, y) {
-        const rndName = EzGame.randomId();
-
-        this.name   = name   || `$go_${rndName}`;
+        this.$id = EzGame.randomId();
+        this.name   = name   || `$go_${this.$id}`;
         this.width  = width  || this.width;
         this.height = height || this.height;
         this.x = x || this.x;
