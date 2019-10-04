@@ -1,10 +1,10 @@
 class Debug {
-    static draw(gameObject, display) {
+    static render(gameObject, display, color) {
         const { x, y, width: w, height: h } = gameObject;
 
         display.beginPath();
 
-        display.strokeStyle = '#0f0f';
+        display.strokeStyle = color || '#ffff';
         display.strokeWidth = 1;
         display.strokeRect(x, y, w, h);
 
