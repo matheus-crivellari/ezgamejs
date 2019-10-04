@@ -1,4 +1,4 @@
-# EasyGame JS game engine
+# EzGameJS game engine
 
 ## License
 Copyright 2019 Matheus Crivellari <matheus.acrivellari@gmail.com>

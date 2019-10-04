@@ -6,28 +6,31 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <script src="../src/game.class.js"></script>
-    <script src="../src/easygame.js"></script>
+    <script src="../src/ezgame.js"></script>
 
-    <title>EasyGameJS</title>
+    <title>EzGameJS</title>
 </head>
 <body>
-    <h1>EasyGameJS</h1>
+    <h1 style="margin-bottom: 0">
+        EzGameJS
+    </h1>
+    <p style="margin-top: 0"><small>Web Game development made easy.</small></p>
     <canvas id="display"></canvas>
     <script>
-        const canvas = document.getElementById('display');
+        const canvas = document.querySelector('#display');
         const game = new Game(canvas);
         game.displayWidth  = 640;
         game.displayHeight = 480;
 
-        game.update = function () {
+        game.update = (instance) => {
             // Here goes aditional game logic.
         }
 
-        game.gui = function () {
+        game.gui = (instance) => {
             // Here goes aditional gui rendering logic.
         }
 
-        EasyGame.start(game);
+        EzGame.start(game);
     </script>
 </body>
 </html>

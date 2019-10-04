@@ -146,24 +146,24 @@ class Game {
     /** Handles game internal update logic. */
     $update() {
         // TODO perform game object list's update.
-        this.update.apply(this);
+        this.update.apply(this, [this]);
     }
 
     /** Handles game internal late update logic. */
     $lateUpdate() {
         // TODO perform game object list's late update.
-        this.lateUpdate.apply(this);
+        this.lateUpdate.apply(this, [this]);
     }
 
     /** Handles game internal render logic. */
     $render() {
         // TODO render game object list.
-        this.render.apply(this);
+        this.render.apply(this, [this]);
     }
 
     /** Handles game internal gui render logic. */
     $gui() {
-        this.gui.apply(this);
+        this.gui.apply(this, [this]);
     }
 
     /**
