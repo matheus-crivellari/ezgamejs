@@ -18,13 +18,6 @@
     <p style="margin-top: 0"><small>Web Game development made simple.</small></p>
     <canvas id="display"></canvas>
     <script>
-        const pad = new GameObject('pad', 20, 20);
-        pad.update = (instance) => {
-            console.log('pad', 'update', this);
-        };
-
-        console.log(pad.hitBox);
-
         const canvas = document.querySelector('#display');
         const game = new Game(canvas);
         game.displayWidth  = 640;
@@ -37,6 +30,18 @@
         game.gui = (instance) => {
             // Here goes aditional gui rendering logic.
         }
+
+        const padw = 30, padh = 10;
+        const pad = new GameObject(
+            'pad',
+            padw, 10,
+            game.width / 2 + padw / 2,
+            game.height - padh * 2,
+        );
+
+        pad.update = (instance) => {
+            console.log('pad', 'update', this);
+        };
 
         EzGame.start(game);
     </script>

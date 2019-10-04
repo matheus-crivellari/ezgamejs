@@ -1,14 +1,18 @@
 class GameObject {
     name;
+    x = 0;
+    y = 0;
     width = 10;
     height = 10;
 
-    constructor(name, width, height) {
+    constructor(name, width, height, x, y) {
         const rndName = EzGame.randomId();
 
         this.name   = name   || `$go_${rndName}`;
         this.width  = width  || this.width;
         this.height = height || this.height;
+        this.x = x || this.x;
+        this.y = y || this.y;
     }
 
     /** User defined callback for game object update logic. */
@@ -46,5 +50,9 @@ class GameObject {
     /** Game object's hit box getter */
     get hitBox() {
         return { width: this.width, height: this.height };
+    }
+
+    get position() {
+        return { x: this.x, y: this.y };
     }
 }
