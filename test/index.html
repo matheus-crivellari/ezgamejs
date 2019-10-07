@@ -21,8 +21,7 @@
     <script>
         const canvas = document.querySelector('#display');
         const game = new Game(canvas);
-        game.displayWidth  = 640;
-        game.displayHeight = 480;
+        game.scale(640,480);
 
         game.update = (instance) => {
             // Here goes aditional game logic.
