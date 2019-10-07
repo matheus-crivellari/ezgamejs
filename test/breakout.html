@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <script src="../src/game.class.js"></script>
+    <script src="../src/gameObject.class.js"></script>
+    <script src="../src/ezgame.js"></script>
+    <script src="../src/debug.class.js"></script>
+
+    <title>EzGameJS</title>
+</head>
+<body>
+    <h1 style="margin-bottom: 0">
+        EzGameJS
+    </h1>
+    <p style="margin-top: 0"><small>Web Game development made simple.</small></p>
+
+    <h2>Breakout example (debug render)</h2>
+
+    <canvas id="display"></canvas>
+    <script>
+        const display = document.querySelector('#display');
+        const breakout = new Game(display);
+        breakout.scale(640, 480);
+        console.log(breakout.ratio);
+
+        const padw = 30, padh = 10;
+        const pad = new GameObject('pad', padw, padh,
+            breakout.width / 2 - padw / 2,
+            breakout.height - padh * 2,
+            'red'
+        );
+
+        pad.input = ($this, $game) => {
+            const elem = $game.domElement;
+
+            elem.addEventListener('mousemove', (e) => {
+                const r = $game.ratio;
+                let x = (e.clientX - elem.offsetLeft) / r,
+                    y = (e.clientY - elem.offsetTop) / r;
+
+                $this.x = x - ($this.width * .5);
+            });
+        };
+
+        pad.update = ($this, $game) => {
+            if($this.x < 0)
+                $this.x = 0;
+
+            if($this.x > $game.width - $this.width)
+                $this.x = $game.width - $this.width;
+        }
+
+        pad.render = ($this, display) => {
+            Debug.render($this, display, pad.color);
+        };
+
+        breakout.add(pad);
+
+        EzGame.start(breakout);
+    </script>
+</body>
+</html>

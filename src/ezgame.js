@@ -17,6 +17,8 @@ class EzGame {
         return ((gameInstance) => {
             gameInstance.setupDisplay();
 
+            gameInstance.$input();
+
             const loopFn = (timestamp) => {
                 gameInstance.tick(timestamp);
 

@@ -127,11 +127,16 @@ class Game {
         this.domElement.width  = this.width;
         this.domElement.height = this.height;
 
-        this.domElement.style.width = `${this.displayWidth}px`;
-        this.domElement.style.height = `${this.displayHeight}px`;
-
         this.display.fillStyle = '#000';
         this.display.fillRect(0,0, this.width, this.height);
+    }
+
+    scale(width, height) {
+        this.domElement.style.width = `${width}px`;
+        this.domElement.style.height = `${height}px`;
+
+        this.displayWidth  = width;
+        this.displayHeight = height;
     }
 
     /**
@@ -158,12 +163,13 @@ class Game {
 
     /** Handles game internal input logic. */
     $input() {
-        // TODO perform game internal input logic.
+        this.gameObjects.map((gameObject) => gameObject.$input(this));
+        this.input.apply(this, [this]);
     }
 
     /** Handles game internal update logic. */
     $update() {
-        // TODO perform game object list's update.
+        this.gameObjects.map((gameObject) => gameObject.$update(this));
         this.update.apply(this, [this]);
     }
 
@@ -206,5 +212,9 @@ class Game {
         }
 
         this.$gui();
+    }
+
+    get ratio() {
+        return this.displayWidth / this.width;
     }
 }

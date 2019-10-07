@@ -6,14 +6,18 @@ class GameObject {
     width = 10;
     height = 10;
 
-    constructor(name, width, height, x, y) {
+    constructor(name, width, height, x, y, color) {
         this.$id = EzGame.randomId();
         this.name   = name   || `$go_${this.$id}`;
         this.width  = width  || this.width;
         this.height = height || this.height;
+        this.color  = color  || '#0f0f';
         this.x = x || this.x;
         this.y = y || this.y;
     }
+
+    /** User defined callback for game object input logic. */
+    input = () => {};
 
     /** User defined callback for game object update logic. */
     update = () => {};
@@ -27,9 +31,14 @@ class GameObject {
     /** User defined callback for game object gui rendering logic. */
     gui = () => {};
 
+    /** Handles game object's internal input logic. */
+    $input(gameInstance) {
+        this.input.apply(this, [this, gameInstance]);
+    }
+
     /** Handles game object's internal update logic. */
-    $update() {
-        this.update.apply(this, [this]);
+    $update(gameInstance) {
+        this.update.apply(this, [this, gameInstance]);
     }
 
     /** Handles game object's internal late update logic. */
