@@ -58,7 +58,12 @@ class GameObject {
 
     /** Game object's hit box getter */
     get hitBox() {
-        return { width: this.width, height: this.height };
+        return {
+            x: this.x - this.width / 2,
+            y: this.y - this.height / 2,
+            width: this.width,
+            height: this.height,
+        };
     }
 
     /** Game object's position getter */

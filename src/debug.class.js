@@ -1,6 +1,6 @@
 class Debug {
-    static render(gameObject, display, color) {
-        const { x, y, width: w, height: h } = gameObject;
+    static render(go, display, color) {
+        const { x, y, width: w, height: h } = go.hitBox;
 
         display.beginPath();
 
