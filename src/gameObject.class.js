@@ -67,7 +67,7 @@ class GameObject {
     }
 
     /** Game object's position getter */
-    get position() {
+    get pivot() {
         return { x: this.x, y: this.y };
     }
 }
