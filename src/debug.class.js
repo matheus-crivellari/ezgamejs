@@ -5,7 +5,7 @@ class Debug {
         display.beginPath();
 
         display.strokeStyle = color || '#ffff';
-        display.strokeWidth = 1;
+        display.lineWidth = 2;
         display.strokeRect(x, y, w, h);
 
         display.closePath();

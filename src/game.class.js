@@ -50,6 +50,8 @@ class Game {
     displayWidth = 0;
     displayHeight = 0;
 
+    buffer = null;
+
     /**
      * Receives the reference for canvas where game will be rendered.
      *
@@ -67,6 +69,13 @@ class Game {
         this.height  = height || this.height;
         this.displayWidth  = this.width;
         this.displayHeight = this.height;
+
+        this.buffer = {
+            element: document.createElement('canvas'),
+            context: null,
+        };
+
+        this.buffer.context = this.buffer.element.getContext('2d');
     }
 
     add(gameObject) {
@@ -124,6 +133,11 @@ class Game {
 
         this.display = this.domElement.getContext('2d');
 
+        // setup buffer display dimensions
+        this.buffer.element.width  = this.width;
+        this.buffer.element.height = this.height;
+
+        // setup actual display dimensions
         this.domElement.width  = this.width;
         this.domElement.height = this.height;
 
@@ -183,12 +197,21 @@ class Game {
     $render() {
         const x = 0, y = 0, { width: w, height: h } = this;
 
+        // clear buffer
+        this.buffer.context.clearRect(x, y, w, h);
+        this.buffer.context.fillStyle = '#000';
+        this.buffer.context.fillRect(x, y, w, h);
+
+        this.gameObjects.map((gameObject) => gameObject.$render(this.buffer.context));
+        this.render.apply(this, [this, this.buffer.context]);
+
+        // clear actual display
         this.display.clearRect(x, y, w, h);
         this.display.fillStyle = '#000';
         this.display.fillRect(x, y, w, h);
 
-        this.gameObjects.map((gameObject) => gameObject.$render(this.display));
-        this.render.apply(this, [this, this.display]);
+        // render buffer to actual display
+        this.display.drawImage(this.buffer.element, 0, 0);
     }
 
     /** Handles game internal gui render logic. */
