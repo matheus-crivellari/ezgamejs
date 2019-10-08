@@ -79,8 +79,14 @@ class Game {
     }
 
     add(gameObject) {
-        if(this.gameObjects.indexOf(gameObject) == -1)
-            this.gameObjects.push(gameObject);
+        if(gameObject instanceof GameObject) {
+            if(this.gameObjects.indexOf(gameObject) == -1)
+                this.gameObjects.push(gameObject);
+        }
+
+        if(gameObject instanceof Array) {
+            gameObject.map(go => this.gameObjects.push(go));
+        }
     }
 
     remove(gameObject) {

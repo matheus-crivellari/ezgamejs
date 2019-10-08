@@ -54,10 +54,32 @@
         }
 
         pad.render = ($this, display) => {
-            Debug.render($this, display, pad.color);
+            Debug.render($this, display, $this.color);
         };
 
+        let bricks = [], brickOffset = 10, gap = 5, x = 0, y = 0;
+
+        for (let i = 0; i < 36; i++) {
+            if (i % 9 === 0 && i) {
+                x = 0; y++;
+            }
+
+            const brick = new GameObject('brick', padw, padh);
+            brick.color = 'green';
+
+            brick.x = (brickOffset * 2) + (x * padw) + (x * gap);
+            brick.y = brickOffset + (y * padh) + (y * gap);
+
+            brick.render = ($this, display) => {
+                Debug.render($this, display, $this.color);
+            };
+
+            bricks = [...bricks, brick];
+            x++;
+        }
+
         breakout.add(pad);
+        breakout.add(bricks);
 
         EzGame.start(breakout);
     </script>
