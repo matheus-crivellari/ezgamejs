@@ -24,24 +24,65 @@
     <script>
         const display = document.querySelector('#display');
         const breakout = new Game(display);
+
+        let started = false, speed = 50, xDir = 1, yDir = -1;
+
         breakout.scale(640, 480);
 
+        breakout.gameOver = () => {
+            if (confirm('Game Over! Try again?'))
+                breakout.reset();
+            else
+                started = false;
+        };
+
+        breakout.init = () => {
+            started = false;
+            speed = 50;
+            xDir = 1; yDir = -1;
+
+            pad.width = padw; pad.height = padh;
+            pad.x = padx; pad.y = pady;
+
+            ball.x = pad.x;
+            ball.y = pad.y - ball.height;
+        };
+
+        breakout.restart = () => {
+            breakout.init();
+        };
+
         const padw = 30, padh = 10;
-        const pad = new GameObject('pad', padw, padh,
-            breakout.width / 2 - padw / 2,
-            breakout.height - padh * 2,
-            'red'
-        );
+        const padx = breakout.width / 2 - padw / 2,
+              pady = breakout.height - padh * 2;
+
+        const pad = new GameObject('pad');
+        pad.color = 'red';
 
         pad.input = ($this, $game) => {
             const elem = $game.domElement;
 
             elem.addEventListener('mousemove', (e) => {
+                if ($game.isOver)
+                    return;
+
                 const r = $game.ratio;
                 let x = (e.clientX - elem.offsetLeft) / r,
                     y = (e.clientY - elem.offsetTop) / r;
 
                 $this.x = x;
+            });
+
+            elem.addEventListener('mouseup', (e) => {
+                if($game.isOver)
+                    return;
+
+                if ($this.x < $game.width / 2)
+                    xDir = -1;
+                else
+                    xDir = 1;
+
+                started = true;
             });
         };
 
@@ -51,10 +92,10 @@
 
             if($this.x > $game.width - $this.width / 2)
                 $this.x = $game.width - $this.width / 2;
-        }
+        };
 
         pad.render = ($this, display) => {
-            Debug.render($this, display, $this.color);
+            Debug.render($this, display);
         };
 
         let bricks = [], brickOffset = 10, gap = 5, x = 0, y = 0;
@@ -71,15 +112,54 @@
             brick.y = brickOffset + (y * padh) + (y * gap);
 
             brick.render = ($this, display) => {
-                Debug.render($this, display, $this.color);
+                Debug.render($this, display);
             };
 
             bricks = [...bricks, brick];
             x++;
         }
 
+        const ball = new GameObject('ball', padh, padh);
+        ball.color = 'yellow';
+
+        ball.update = ($this, $game) => {
+            if ($game.isOver)
+                return;
+
+            if (!started) {
+                $this.x = pad.x;
+                return;
+            } else {
+                $this.x += speed * xDir * $game.deltaTime;
+                $this.y += speed * yDir * $game.deltaTime;
+            }
+
+            if ($this.x >= $game.width || $this.x <= 0)
+                xDir *= -1;
+
+            if ($this.y <= 0)
+                yDir *= -1;
+
+            const halfPad = pad.width / 2;
+            const padL = pad.x - halfPad, padR = pad.x + halfPad;
+            const padT = pad.y - pad.height / 2;
+
+            if ($this.x >= padL && $this.x <= padR) {
+                if ($this.y >= padT)
+                    yDir *= -1;
+            }
+
+            if ($this.y >= $game.height)
+                $game.over();
+        };
+
+        ball.render = ($this, display) => {
+            Debug.render($this, display);
+        };
+
         breakout.add(pad);
         breakout.add(bricks);
+        breakout.add(ball);
 
         EzGame.start(breakout);
     </script>
