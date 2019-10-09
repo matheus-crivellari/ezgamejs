@@ -44,12 +44,19 @@ class Game {
     /** Game object queue. This is for update and rendering. */
     gameObjects = [];
 
+    /** Tells if game is whether over or not. */
+    isOver = false;
+
     elapsedTime = 0;
     deltaTime   = 0;
 
     displayWidth = 0;
     displayHeight = 0;
 
+    /**
+     * Stores the reference for buffer canvase's 2d
+     * context where the game will be rendered.
+     */
     buffer = null;
 
     /**
@@ -78,6 +85,7 @@ class Game {
         this.buffer.context = this.buffer.element.getContext('2d');
     }
 
+    /** Adds game object(s) to game's object processing list. */
     add(gameObject) {
         if(gameObject instanceof GameObject) {
             if(this.gameObjects.indexOf(gameObject) == -1)
@@ -89,6 +97,7 @@ class Game {
         }
     }
 
+    /** Removes specific provided game object from game's processing list. */
     remove(gameObject) {
         const index = this.gameObjects.indexOf(gameObject);
         return this.gameObjects.splice(index,1);
@@ -151,6 +160,7 @@ class Game {
         this.display.fillRect(0,0, this.width, this.height);
     }
 
+    /** Scales actual game display. */
     scale(width, height) {
         this.domElement.style.width = `${width}px`;
         this.domElement.style.height = `${height}px`;
@@ -158,6 +168,9 @@ class Game {
         this.displayWidth  = width;
         this.displayHeight = height;
     }
+
+    /** User defined callback for game initialization. */
+    init = () => {};
 
     /**
      * User defined callback for game input logic.
@@ -180,6 +193,31 @@ class Game {
 
     /** User defined callback for game gui rendering. */
     gui = () => {};
+
+    /** User defined callback for gameOver. */
+    gameOver = () => {};
+
+    /** User defined callback for game restarting. */
+    restart = () => {};
+
+    reset() {
+        this.isOver = false;
+        this.restart.apply(this, [this]);
+    }
+
+    /**
+     * Ends game match.
+     */
+    over() {
+        this.isOver = true;
+        this.gameOver.apply(this, [this]);
+    }
+
+    /** Handles game internal initialization logic. */
+    $init() {
+        this.isOver = false;
+        this.init.apply(this, [this]);
+    }
 
     /** Handles game internal input logic. */
     $input() {
@@ -231,18 +269,22 @@ class Game {
      * @param {Number} timestamp Elapsed time since game started.
      */
     tick(timestamp) {
-        this.deltaTime   = timestamp - this.elapsedTime;
+        if (!this.$alive)
+            return;
+
+        this.deltaTime   = (timestamp - this.elapsedTime) / 1000;
         this.elapsedTime = timestamp;
 
         if(this.playing) {
             this.$update();
             this.$lateUpdate();
-            this.$render();
         }
 
+        this.$render();
         this.$gui();
     }
 
+    /** Gets the game scale ratio. */
     get ratio() {
         return this.displayWidth / this.width;
     }

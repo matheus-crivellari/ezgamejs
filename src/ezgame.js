@@ -28,6 +28,8 @@ class EzGame {
 
             window.requestAnimationFrame(loopFn);
 
+            gameInstance.$init();
+
         })(game);
     }
 
