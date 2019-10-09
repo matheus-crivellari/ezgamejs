@@ -4,7 +4,7 @@ class Debug {
 
         display.beginPath();
 
-        display.strokeStyle = color || '#ffff';
+        display.strokeStyle = color || go.color || '#ffff';
         display.lineWidth = 2;
         display.strokeRect(x, y, w, h);
 
