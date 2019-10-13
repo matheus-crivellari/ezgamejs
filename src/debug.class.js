@@ -1,3 +1,5 @@
+'use strict';
+
 class Debug {
     static render(go, display, color) {
         const { x, y, width: w, height: h } = go.hitBox;
