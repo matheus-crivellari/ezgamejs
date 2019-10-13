@@ -48,7 +48,8 @@ class Game {
     isOver = false;
 
     elapsedTime = 0;
-    deltaTime   = 0;
+    $deltaTime  = 0;
+    timeScale   = 1;
 
     displayWidth = 0;
     displayHeight = 0;
@@ -272,7 +273,7 @@ class Game {
         if (!this.$alive)
             return;
 
-        this.deltaTime   = (timestamp - this.elapsedTime) / 1000;
+        this.$deltaTime   = (timestamp - this.elapsedTime) / 1000;
         this.elapsedTime = timestamp;
 
         if(this.playing) {
@@ -287,5 +288,9 @@ class Game {
     /** Gets the game scale ratio. */
     get ratio() {
         return this.displayWidth / this.width;
+    }
+
+    get deltaTime() {
+        return this.$deltaTime * this.timeScale;
     }
 }
