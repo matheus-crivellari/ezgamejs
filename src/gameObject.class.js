@@ -1,3 +1,5 @@
+'use strict';
+
 class GameObject {
     $id;
     name;
@@ -10,7 +12,7 @@ class GameObject {
         this.$id = EzGame.randomId();
         this.name   = name   || `$go_${this.$id}`;
         this.width  = width  || this.width;
-        this.height = height || this.height;
+        this.height = height || width || this.height;
         this.color  = color  || '#0f0f';
         this.x = x || this.x;
         this.y = y || this.y;
@@ -56,7 +58,7 @@ class GameObject {
         this.gui.apply(this, [this]);
     }
 
-    /** Game object's hit box getter */
+    /** Game object's hit box getter. */
     get hitBox() {
         return {
             x: this.x - this.width / 2,
@@ -66,8 +68,17 @@ class GameObject {
         };
     }
 
-    /** Game object's position getter */
+    /** Game object's position getter. */
     get pivot() {
         return { x: this.x, y: this.y };
+    }
+
+    /**
+     * Test collision with other game object.
+     *
+     * @param {GameObject} other other game object wihch we want to test collision with.
+     */
+    collides(other) {
+        return false;
     }
 }
