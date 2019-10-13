@@ -26,8 +26,8 @@
         const game = new Game(canvas);
         game.scale(640,480);
 
-        const obj1 = new GameObject('o1', 50), obj2 = new GameObject('o2', 30);
-        const inter = new GameObject('intersection');
+        const obj1 = new GameObject('o1', 80), obj2 = new GameObject('o2', 50);
+        const inter = new GameObject('intersection'), iPivot = new GameObject('ipivot', 1);
 
         game.input = ($game) => {
             const elem = $game.domElement;
@@ -61,7 +61,11 @@
             Debug.render($this, display, 'magenta');
         }
 
-        game.add([obj1, obj2, inter]);
+        iPivot.render = ($this, display) => {
+            Debug.render($this, display, 'yellow');
+        }
+
+        game.add([obj1, obj2, inter, iPivot]);
 
         EzGame.start(game);
 
@@ -79,11 +83,15 @@
                 inter.y = i.y;
                 inter.width = i.width;
                 inter.height = i.height;
+
+                iPivot.pivot = inter.pivot;
             } else {
                 inter.x = 0;
                 inter.y = 0;
                 inter.width = 0;
                 inter.height = 0;
+
+                iPivot.pivot = { x: 0, y: 0};
             }
         }
 
