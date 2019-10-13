@@ -58,8 +58,18 @@ class GameObject {
         this.gui.apply(this, [this]);
     }
 
-    /** Game object's hit box getter. */
+    /** Game object's absolute hit box getter. */
     get hitBox() {
+        return {
+            left:   this.x - this.width  / 2,
+            top:    this.y - this.height / 2,
+            right:  this.x + this.width  / 2,
+            bottom: this.y + this.height / 2,
+        };
+    }
+
+    /** Game object's rect getter. */
+    get rect() {
         return {
             x: this.x - this.width / 2,
             y: this.y - this.height / 2,
@@ -73,12 +83,26 @@ class GameObject {
         return { x: this.x, y: this.y };
     }
 
+    /** Game object's position setter. */
+    set pivot(pivot) {
+        this.x = pivot.x;
+        this.y = pivot.y;
+    }
+
     /**
      * Test collision with other game object.
      *
      * @param {GameObject} other other game object wihch we want to test collision with.
      */
     collides(other) {
-        return false;
+        let { left: aL, top: aT, right: aR, bottom: aB } = this.hitBox;
+        let { left: bL, top: bT, right: bR, bottom: bB } = other.hitBox;
+
+        if(aL > bR) return false;
+        if(aR < bL) return false;
+        if(aT > bB) return false;
+        if(aB < bT) return false;
+
+        return true;
     }
 }
