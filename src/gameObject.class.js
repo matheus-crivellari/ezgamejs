@@ -90,19 +90,52 @@ class GameObject {
     }
 
     /**
-     * Test collision with other game object.
+     * Test overlapping with other game object. Can be used for collision testing.
      *
-     * @param {GameObject} other other game object wihch we want to test collision with.
+     * @param {GameObject} other other game object wihch we want to test overlapping with.
+     * @returns {bollean} true if overlaps, false if not.
      */
-    collides(other) {
+    overlaps(other) {
         let { left: aL, top: aT, right: aR, bottom: aB } = this.hitBox;
         let { left: bL, top: bT, right: bR, bottom: bB } = other.hitBox;
 
-        if(aL > bR) return false;
-        if(aR < bL) return false;
-        if(aT > bB) return false;
-        if(aB < bT) return false;
+        if (aL > bR) return false;
+        if (aR < bL) return false;
+        if (aT > bB) return false;
+        if (aB < bT) return false;
 
         return true;
+    }
+
+    getIntersection(other) {
+        if (!this.overlaps(other))
+            return null;
+
+        let left   = other.hitBox.left;
+        let right  = other.hitBox.right;
+        let top    = other.hitBox.top;
+        let bottom = other.hitBox.bottom;
+
+        if (this.hitBox.left > left)
+            left = this.hitBox.left;
+
+        if (this.hitBox.right < right)
+            right = this.hitBox.right;
+
+        if (this.hitBox.top > top)
+            top = this.hitBox.top;
+
+        if (this.hitBox.bottom < bottom)
+            bottom = this.hitBox.bottom;
+
+        const width  = right - left;
+        const height = bottom - top;
+
+        return {
+            x: left + width / 2,
+            y: top + height / 2,
+            width: width,
+            height: height,
+        };
     }
 }
