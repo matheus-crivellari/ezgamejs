@@ -21,13 +21,13 @@
     <h2>Collision example (debug render)</h2>
 
     <canvas id="display"></canvas>
-    <button id="test" onclick="test()">Test</button>
     <script>
         const canvas = document.querySelector('#display');
         const game = new Game(canvas);
         game.scale(640,480);
 
-        const obj1 = new GameObject('o1', 50), obj2 = new GameObject('o2', 50);
+        const obj1 = new GameObject('o1', 50), obj2 = new GameObject('o2', 30);
+        const inter = new GameObject('intersection');
 
         game.input = ($game) => {
             const elem = $game.domElement;
@@ -41,10 +41,12 @@
 
                 this.x = x;
                 this.y = y;
+
+                test();
             }
 
             elem.addEventListener('click', $pos.bind(obj1));
-            elem.addEventListener('contextmenu', $pos.bind(obj2));
+            elem.addEventListener('mousemove', $pos.bind(obj2));
         };
 
         obj1.render = ($this, display) => {
@@ -55,17 +57,37 @@
             Debug.render($this, display, 'red');
         };
 
-        game.add([obj1, obj2]);
+        inter.render = ($this, display) => {
+            Debug.render($this, display, 'magenta');
+        }
+
+        game.add([obj1, obj2, inter]);
 
         EzGame.start(game);
 
         function test() {
             console.clear();
             console.table({
-                'obj1 x obj2': obj1.collides(obj2),
-                'obj2 x obj1': obj2.collides(obj1),
+                'obj1 x obj2': obj1.overlaps(obj2),
+                'obj2 x obj1': obj2.overlaps(obj1),
             });
+
+            if (obj1.overlaps(obj2)) {
+                const i = obj1.getIntersection(obj2);
+
+                inter.x = i.x;
+                inter.y = i.y;
+                inter.width = i.width;
+                inter.height = i.height;
+            } else {
+                inter.x = 0;
+                inter.y = 0;
+                inter.width = 0;
+                inter.height = 0;
+            }
         }
+
+        test();
 
     </script>
 </body>
