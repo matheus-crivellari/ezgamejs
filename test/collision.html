@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <script src="../src/game.class.js"></script>
+    <script src="../src/gameObject.class.js"></script>
+    <script src="../src/ezgame.js"></script>
+    <script src="../src/debug.class.js"></script>
+
+    <title>EzGameJS</title>
+</head>
+<body>
+    <h1 style="margin-bottom: 0">
+        EzGameJS
+    </h1>
+    <p style="margin-top: 0"><small>Web Game development made simple.</small></p>
+
+    <h2>Collision example (debug render)</h2>
+
+    <canvas id="display"></canvas>
+    <button id="test" onclick="test()">Test</button>
+    <script>
+        const canvas = document.querySelector('#display');
+        const game = new Game(canvas);
+        game.scale(640,480);
+
+        const obj1 = new GameObject('o1', 50), obj2 = new GameObject('o2', 50);
+
+        game.input = ($game) => {
+            const elem = $game.domElement;
+
+            function $pos(e) {
+                e.preventDefault();
+
+                const r = $game.ratio;
+                const x = (e.clientX - elem.offsetLeft) / r;
+                const y = (e.clientY - elem.offsetTop) / r;
+
+                this.x = x;
+                this.y = y;
+            }
+
+            elem.addEventListener('click', $pos.bind(obj1));
+            elem.addEventListener('contextmenu', $pos.bind(obj2));
+        };
+
+        obj1.render = ($this, display) => {
+            Debug.render($this, display);
+        };
+
+        obj2.render = ($this, display) => {
+            Debug.render($this, display, 'red');
+        };
+
+        game.add([obj1, obj2]);
+
+        EzGame.start(game);
+
+        function test() {
+            console.clear();
+            console.table({
+                'obj1 x obj2': obj1.collides(obj2),
+                'obj2 x obj1': obj2.collides(obj1),
+            });
+        }
+
+    </script>
+</body>
+</html>
