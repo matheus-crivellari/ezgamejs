@@ -2,7 +2,7 @@
 
 class Debug {
     static render(go, display, color) {
-        const { x, y, width: w, height: h } = go.hitBox;
+        const { x, y, width: w, height: h } = go.rect;
 
         display.beginPath();
 
