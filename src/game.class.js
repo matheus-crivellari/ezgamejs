@@ -203,6 +203,7 @@ class Game {
 
     reset() {
         this.isOver = false;
+        this.gameObjects.map(go => { go.$alive = true; });
         this.restart.apply(this, [this]);
     }
 
