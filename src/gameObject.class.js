@@ -2,6 +2,7 @@
 
 class GameObject {
     $id;
+    $alive;
     name;
     x = 0;
     y = 0;
@@ -10,6 +11,7 @@ class GameObject {
 
     constructor(name, width, height, x, y, color) {
         this.$id = EzGame.randomId();
+        this.$alive = true;
         this.name   = name   || `$go_${this.$id}`;
         this.width  = width  || this.width;
         this.height = height || width || this.height;
@@ -33,29 +35,37 @@ class GameObject {
     /** User defined callback for game object gui rendering logic. */
     gui = () => {};
 
+    /** User defined callback for game object destruction event. */
+    onDestroy = () => {};
+
     /** Handles game object's internal input logic. */
     $input(gameInstance) {
-        this.input.apply(this, [this, gameInstance]);
+        if(this.$alive)
+            this.input.apply(this, [this, gameInstance]);
     }
 
     /** Handles game object's internal update logic. */
     $update(gameInstance) {
-        this.update.apply(this, [this, gameInstance]);
+        if(this.$alive)
+            this.update.apply(this, [this, gameInstance]);
     }
 
     /** Handles game object's internal late update logic. */
     $lateUpdate() {
-        this.lateUpdate.apply(this, [this]);
+        if(this.$alive)
+            this.lateUpdate.apply(this, [this]);
     }
 
     /** Handles game object's internal rendering logic. */
     $render(displayRef) {
-        this.render.apply(this, [this, displayRef]);
+        if(this.$alive)
+            this.render.apply(this, [this, displayRef]);
     }
 
     /** Handles game object's internal gui rendering logic. */
     $gui(){
-        this.gui.apply(this, [this]);
+        if(this.$alive)
+            this.gui.apply(this, [this]);
     }
 
     /** Game object's absolute hit box getter. */
@@ -96,6 +106,9 @@ class GameObject {
      * @returns {bollean} true if overlaps, false if not.
      */
     overlaps(other) {
+        if (!this.$alive)
+            return false;
+
         let { left: aL, top: aT, right: aR, bottom: aB } = this.hitBox;
         let { left: bL, top: bT, right: bR, bottom: bB } = other.hitBox;
 
@@ -105,6 +118,13 @@ class GameObject {
         if (aB < bT) return false;
 
         return true;
+    }
+
+    destroy() {
+        if (this.$alive) {
+            this.$alive = false;
+            this.onDestroy.apply(this, [this]);
+        }
     }
 
     getIntersection(other) {
