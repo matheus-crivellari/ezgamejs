@@ -74,7 +74,7 @@
             });
 
             elem.addEventListener('mouseup', (e) => {
-                if($game.isOver)
+                if($game.isOver || started)
                     return;
 
                 if ($this.x < $game.width / 2)
@@ -115,6 +115,47 @@
                 Debug.render($this, display);
             };
 
+            brick.onDestroy = () => {
+                speed += 2;
+            };
+
+            brick.update = ($this, $game) => {
+                if($this.overlaps(ball)) {
+
+                    if($this.y < ball.y) { // collided on bottom
+                        const inter = $this.getIntersection(ball);
+                        $this.y += inter.height;
+                        yDir *= -1;
+                        $this.destroy();
+                        return;
+                    }
+
+                    if($this.y > ball.y) { // collided on top
+                        const inter = $this.getIntersection(ball);
+                        $this.y -= inter.height;
+                        yDir *= -1;
+                        $this.destroy();
+                        return;
+                    }
+
+                    if($this.x > ball.x) { // collided on left
+                        const inter = $this.getIntersection(ball);
+                        $this.x -= inter.width;
+                        xDir *= -1;
+                        $this.destroy();
+                        return;
+                    }
+
+                    if($this.x < ball.x) { // collided on right
+                        const inter = $this.getIntersection(ball);
+                        $this.x += inter.width;
+                        xDir *= -1;
+                        $this.destroy();
+                        return;
+                    }
+                }
+            };
+
             bricks = [...bricks, brick];
             x++;
         }
@@ -140,13 +181,28 @@
             if ($this.y <= 0)
                 yDir *= -1;
 
-            const halfPad = pad.width / 2;
-            const padL = pad.x - halfPad, padR = pad.x + halfPad;
-            const padT = pad.y - pad.height / 2;
-
-            if ($this.x >= padL && $this.x <= padR) {
-                if ($this.y >= padT)
+            // Collided with pad
+            if($this.overlaps(pad)) {
+                if($this.y < pad.y) { // collided on top
+                    const inter = $this.getIntersection(pad);
+                    $this.y -= inter.height;
                     yDir *= -1;
+                    return;
+                }
+
+                if($this.x < pad.x) { // collided on left
+                    const inter = $this.getIntersection(pad);
+                    $this.x -= inter.width;
+                    xDir *= -1;
+                    return;
+                }
+
+                if($this.x > pad.x) { // collided on right
+                    const inter = $this.getIntersection(pad);
+                    $this.x += inter.width;
+                    xDir *= -1;
+                    return;
+                }
             }
 
             if ($this.y >= $game.height)
