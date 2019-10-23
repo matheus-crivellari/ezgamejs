@@ -74,6 +74,13 @@
             });
 
             elem.addEventListener('mouseup', (e) => {
+                const r = $game.ratio;
+                let x = (e.clientX - elem.offsetLeft) / r,
+                    y = (e.clientY - elem.offsetTop) / r;
+
+                $this.x = x;
+                ball.x = x;
+
                 if($game.isOver || started)
                     return;
 
@@ -117,39 +124,53 @@
 
             brick.onDestroy = () => {
                 speed += 2;
+
+                let test = true;
+                bricks.map(brick => test = test && !brick.$alive)
+
+                if(test) {
+                    setTimeout(() => {
+                        endGame();
+                    }, 500)
+                }
             };
+
+            function endGame() {
+                if(confirm('Congratulations! Game Over! Play again?')) {
+                    breakout.reset();
+                }
+            }
 
             brick.update = ($this, $game) => {
                 if($this.overlaps(ball)) {
+                    const inter = $this.getIntersection(ball);
+                    const $w = inter.width > inter.height;
+                    const $h = inter.height > inter.width;
 
-                    if($this.y < ball.y) { // collided on bottom
-                        const inter = $this.getIntersection(ball);
+                    if($this.y < inter.y && $w) { // collided on bottom
                         $this.y += inter.height;
-                        yDir *= -1;
+                        yDir = 1;
                         $this.destroy();
                         return;
                     }
 
-                    if($this.y > ball.y) { // collided on top
-                        const inter = $this.getIntersection(ball);
+                    if($this.y > inter.y && $w) { // collided on top
                         $this.y -= inter.height;
-                        yDir *= -1;
+                        yDir = -1;
                         $this.destroy();
                         return;
                     }
 
-                    if($this.x > ball.x) { // collided on left
-                        const inter = $this.getIntersection(ball);
+                    if($this.x > inter.x && $h) { // collided on left
                         $this.x -= inter.width;
-                        xDir *= -1;
+                        xDir = -1;
                         $this.destroy();
                         return;
                     }
 
-                    if($this.x < ball.x) { // collided on right
-                        const inter = $this.getIntersection(ball);
+                    if($this.x < inter.x && $h) { // collided on right
                         $this.x += inter.width;
-                        xDir *= -1;
+                        xDir = 1;
                         $this.destroy();
                         return;
                     }
@@ -175,37 +196,39 @@
                 $this.y += speed * yDir * $game.deltaTime;
             }
 
-            if ($this.x >= $game.width || $this.x <= 0)
+            const w = $this.width/2, h = $this.height/2;
+            if ($this.x >= $game.width - w || $this.x <= 0 + w)
                 xDir *= -1;
 
-            if ($this.y <= 0)
+            if ($this.y <= h)
                 yDir *= -1;
 
             // Collided with pad
             if($this.overlaps(pad)) {
-                if($this.y < pad.y) { // collided on top
-                    const inter = $this.getIntersection(pad);
+                const inter = $this.getIntersection(pad);
+                const $w = inter.width > inter.height;
+                const $h = inter.height > inter.width;
+
+                if($this.y < inter.y && $w) { // collided on top
                     $this.y -= inter.height;
                     yDir *= -1;
                     return;
                 }
 
-                if($this.x < pad.x) { // collided on left
-                    const inter = $this.getIntersection(pad);
+                if($this.x < inter.x && $h) { // collided on left
                     $this.x -= inter.width;
                     xDir *= -1;
                     return;
                 }
 
-                if($this.x > pad.x) { // collided on right
-                    const inter = $this.getIntersection(pad);
+                if($this.x > inter.x && $h) { // collided on right
                     $this.x += inter.width;
                     xDir *= -1;
                     return;
                 }
             }
 
-            if ($this.y >= $game.height)
+            if ($this.y >= $game.height - h)
                 $game.over();
         };
 
