@@ -36,7 +36,7 @@ class EzGame {
     /**
      * Generates a random identification string to be used inside game engine.
      */
-    static randomId() {
-        return (new Date().getTime()).toString(16).replace('.','');
+    static randomId(seed) {
+        return (new Date().getTime() + Math.random() * 1000).toString(16).replace('.','');
     }
 }
