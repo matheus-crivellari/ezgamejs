@@ -37,6 +37,7 @@
         };
 
         breakout.init = () => {
+            breakout.timeScale = 1;
             started = false;
             speed = 50;
             xDir = 1; yDir = -1;
@@ -129,6 +130,7 @@
                 bricks.map(brick => test = test && !brick.$alive)
 
                 if(test) {
+                    breakout.timeScale = .25;
                     setTimeout(() => {
                         endGame();
                     }, 500)
@@ -197,11 +199,20 @@
             }
 
             const w = $this.width/2, h = $this.height/2;
-            if ($this.x >= $game.width - w || $this.x <= 0 + w)
+            if ($this.x >= $game.width - w) { // right wall
+                $this.x -= $this.x - ($game.width - w);
                 xDir *= -1;
+            }
 
-            if ($this.y <= h)
+            if($this.x <= w) { // left wall
+                $this.x -= $this.x - w;
+                xDir *= -1;
+            }
+
+            if ($this.y <= h) { // top wall
+                $this.y -= $this.y - h;
                 yDir *= -1;
+            }
 
             // Collided with pad
             if($this.overlaps(pad)) {
