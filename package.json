@@ -3,13 +3,15 @@
   "version": "1.0.0",
   "description": "A simple JavaScript game engine.",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [
     "game",
     "engine",
     "javascript"
   ],
   "author": "Matheus Crivellari <matheus.acrivellari@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^4.0.2"
+  }
 }
