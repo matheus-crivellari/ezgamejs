@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "A simple JavaScript game engine.",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+      "release": "gulp release"
+  },
   "keywords": [
     "game",
     "engine",
@@ -12,6 +14,14 @@
   "author": "Matheus Crivellari <matheus.acrivellari@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "gulp": "^4.0.2"
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.6.3",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-terser": "^1.2.0",
+    "gulp-uglify": "^3.0.2"
   }
 }
