@@ -58,6 +58,8 @@ class EzGame {
 
 }
 
+_defineProperty(EzGame, "version", '0.1.0');
+
 'use strict';
 /**
  * This class represents an interface for

@@ -5,6 +5,8 @@
  */
 class EzGame {
 
+    static version = '{{VERSION}}';
+
     /**
      * Instantiates a new game based on the definitions provided
      * and returns closure within which the game will be executed.

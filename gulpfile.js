@@ -1,12 +1,17 @@
-const   { src, dest, series } = require('gulp'),
-        concat = require('gulp-concat'),
-        terser = require('gulp-terser'),
-        rename = require('gulp-rename'),
-        babel  = require('gulp-babel');
+const   fs = require('fs'),
+        { src, dest, series } = require('gulp'),
+        concat  = require('gulp-concat'),
+        terser  = require('gulp-terser'),
+        rename  = require('gulp-rename'),
+        replace = require('gulp-replace'),
+        babel   = require('gulp-babel');
 
 async function release() {
+    const { version } = JSON.parse(fs.readFileSync('./package.json'));
+
     return src('./src/**/*.js')
         .pipe(concat('ez.js'))
+        .pipe(replace('{{VERSION}}', version))
         .pipe(babel({
             plugins: ['@babel/plugin-proposal-class-properties'],
         }))
