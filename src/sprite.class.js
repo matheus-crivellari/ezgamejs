@@ -1,12 +1,12 @@
-class Sprite {
+class Sprite extends GameObject {
     $url;
-    element;
-    width;
-    height;
+    img;
     failed;
     loaded;
 
     constructor(url) {
+        super();
+
         const $url = url || '';
         const e = document.createElement('IMG');
 
@@ -25,11 +25,11 @@ class Sprite {
             }
         });
 
-        this.$url    = $url;
-        this.element = e   || null;
-        this.width   = 0;
-        this.height  = 0;
-        this.loaded  = false;
-        this.failed  = false;
+        this.$url   = $url;
+        this.img    = e || null;
+        this.width  = 0;
+        this.height = 0;
+        this.loaded = false;
+        this.failed = false;
     }
 }

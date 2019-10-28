@@ -20,9 +20,10 @@
 
         go.render = ($this, $display) => {
 
-            if(sp.loaded)
-                $display.drawImage(sp.element, 10, 10, sp.width, sp.height);
-
+            if(sp.loaded) {
+                const img = sp.img;
+                $display.drawImage(img, 10, 10, sp.width, sp.height);
+            }
         };
 
         EzGame.start(game);
