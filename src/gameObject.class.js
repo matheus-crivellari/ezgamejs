@@ -8,6 +8,7 @@ class GameObject {
     y = 0;
     width = 10;
     height = 10;
+    pixelPerfect = true;
 
     constructor(name, width, height, x, y, color) {
         this.$id = EzGame.randomId();
@@ -80,11 +81,18 @@ class GameObject {
 
     /** Game object's rect getter. */
     get rect() {
+        let fn;
+
+        if(this.pixelPerfect)
+            fn = Math.ceil;
+        else
+            fn = (value) => value;
+
         return {
-            x: this.x - this.width / 2,
-            y: this.y - this.height / 2,
-            width: this.width,
-            height: this.height,
+            x:      fn(this.x - this.width / 2),
+            y:      fn(this.y - this.height / 2),
+            width:  fn(this.width),
+            height: fn(this.height),
         };
     }
 

@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <script src="../dist/ez.js"></script>
+    <script src="../src/debug.class.js"></script>
+    <script src="../src/ezgame.js"></script>
+    <script src="../src/game.class.js"></script>
+    <script src="../src/gameObject.class.js"></script>
     <script src="../src/sprite.class.js"></script>
 
     <title>Sprite</title>
@@ -14,16 +17,49 @@
     <canvas id="display"></canvas>
     <script>
         const elem = document.querySelector('#display');
-        const game = new Game(elem, 160, 120);
+        const game = new Game(elem, 320, 224); // SEGA MegaDrive resoltion
         const spr = new Sprite('walk_cicle_sprite-sheet.png');
 
-        spr.x = spr.y = 48;
+        spr.x = game.width  / 2;
+        spr.y = game.height / 2;
         spr.width = spr.height = 48;
+
+        let xd = 1, yd = 1, spd = 50;
+        spr.update = ($this, $game) => {
+            $this.x += spd * $game.deltaTime * xd;
+            $this.y += spd * $game.deltaTime * yd;
+
+            const l = 0 + ($this.x - $this.width  / 2);
+            const r = game.width - ($this.x + $this.width  / 2);
+            const t = 0 + ($this.y - $this.height / 2);
+            const b = game.height - ($this.y + $this.height / 2);
+
+            if(l < 0) {
+                $this.x -= l;
+                xd *= -1;
+            }
+
+            if(r < 0) {
+                $this.x += r;
+                xd *= -1;
+            }
+
+            if(t < 0) {
+                $this.y -= t;
+                yd *= -1;
+            }
+
+            if(b < 0) {
+                $this.y += b;
+                yd *= -1;
+            }
+
+        };
+
         spr.render = ($this, $display) => {
             if($this.loaded) {
-                const { x, y, width: w, height: h } = $this.rect;
+                let { x, y, width: w, height: h } = $this.rect;
                 $display.drawImage($this.img, x, y, w, h);
-                Debug.render($this, $display);
             }
 
             if($this.failed) {

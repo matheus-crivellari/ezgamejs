@@ -30,7 +30,7 @@ class Game {
     height = 240;
 
     /** Tells if game should either render pixel perfect or not. */
-    pixelPerfect = true;
+    $pixelPerfect = true;
 
     /** Tells if game is whether paused or not. */
     paused  = false;
@@ -88,13 +88,19 @@ class Game {
 
     /** Adds game object(s) to game's object processing list. */
     add(gameObject) {
+        const ref  = this;
         if(gameObject instanceof GameObject) {
+            gameObject.pixelPerfect = this.$pixelPerfect;
+
             if(this.gameObjects.indexOf(gameObject) == -1)
                 this.gameObjects.push(gameObject);
         }
 
         if(gameObject instanceof Array) {
-            gameObject.map(go => this.gameObjects.push(go));
+            gameObject.map((go) => {
+                go.pixelPerfect = ref.$pixelPerfect
+                this.gameObjects.push(go)
+            });
         }
     }
 
@@ -143,7 +149,7 @@ class Game {
             $parent.appendChild(this.domElement);
         }
 
-        if(this.pixelPerfect) {
+        if(this.$pixelPerfect) {
             this.domElement.style['image-rendering'] = 'pixelated';
         }
 
@@ -293,5 +299,15 @@ class Game {
 
     get deltaTime() {
         return this.$deltaTime * this.timeScale;
+    }
+
+    get pixelPerfect() {
+        return this.$pixelPerfect;
+    }
+
+    set pixelPerfect(value) {
+        this.$pixelPerfect = value;
+
+        this.gameObjects.map(go => go.pixelPerfect = value);
     }
 }
