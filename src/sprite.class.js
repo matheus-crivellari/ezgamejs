@@ -1,3 +1,5 @@
+'use strict';
+
 class Sprite extends GameObject {
     $url;
     img;
@@ -8,13 +10,18 @@ class Sprite extends GameObject {
         super();
 
         const $url = url || '';
-        const e = document.createElement('IMG');
+        const elem = document.createElement('IMG');
 
         if($url)
-            e.src = $url;
+            elem.src = $url;
 
         const ref = this;
-        e.addEventListener('load', function (e) {
+        elem.addEventListener('error', (e) => {
+            ref.loaded = false;
+            ref.failed = true;
+        });
+
+        elem.addEventListener('load', (e) => {
             const img = e.target;
 
             if(img) {
@@ -26,7 +33,7 @@ class Sprite extends GameObject {
         });
 
         this.$url   = $url;
-        this.img    = e || null;
+        this.img    = elem || null;
         this.width  = 0;
         this.height = 0;
         this.loaded = false;

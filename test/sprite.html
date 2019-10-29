@@ -11,20 +11,28 @@
     <title>Sprite</title>
 </head>
 <body>
+    <canvas id="display"></canvas>
     <script>
-        const game = new Game();
-        const go = new GameObject();
-        const sp = new Sprite('https://koenig-media.raywenderlich.com/uploads/2012/06/PixelArtTutorial.png');
+        const elem = document.querySelector('#display');
+        const game = new Game(elem, 160, 120);
+        const spr = new Sprite('walk_cicle_sprite-sheet.png');
 
-        game.add(go);
+        spr.x = spr.y = 48;
+        spr.width = spr.height = 48;
+        spr.render = ($this, $display) => {
+            if($this.loaded) {
+                const { x, y, width: w, height: h } = $this.rect;
+                $display.drawImage($this.img, x, y, w, h);
+                Debug.render($this, $display);
+            }
 
-        go.render = ($this, $display) => {
-
-            if(sp.loaded) {
-                const img = sp.img;
-                $display.drawImage(img, 10, 10, sp.width, sp.height);
+            if($this.failed) {
+                Debug.render($this, $display);
             }
         };
+
+        game.add(spr);
+        game.scale(800, 600);
 
         EzGame.start(game);
     </script>
