@@ -24,10 +24,10 @@
         spr.y = game.height / 2;
         spr.width = spr.height = 48;
 
-        let xd = 1, yd = 1, spd = 50;
+        let xd = 1, yd = 1, spd = 2;
         spr.update = ($this, $game) => {
-            $this.x += spd * $game.deltaTime * xd;
-            $this.y += spd * $game.deltaTime * yd;
+            $this.x += spd * xd;
+            $this.y += spd * yd;
 
             const l = 0 + ($this.x - $this.width  / 2);
             const r = game.width - ($this.x + $this.width  / 2);
@@ -68,7 +68,7 @@
         };
 
         game.add(spr);
-        game.scale(800, 600);
+        // game.scale(800, 600);
 
         EzGame.start(game);
     </script>

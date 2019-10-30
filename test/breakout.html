@@ -26,7 +26,7 @@
         const display = document.querySelector('#display');
         const breakout = new Game(display);
 
-        let started = false, speed = 50, xDir = 1, yDir = -1;
+        let started = false, speed = 1, xDir = 1, yDir = -1;
 
         breakout.scale(640, 480);
 
@@ -40,7 +40,7 @@
         breakout.init = () => {
             breakout.timeScale = 1;
             started = false;
-            speed = 50;
+            speed = 1;
             xDir = 1; yDir = -1;
 
             pad.width = padw; pad.height = padh;
@@ -80,11 +80,11 @@
                 let x = (e.clientX - elem.offsetLeft) / r,
                     y = (e.clientY - elem.offsetTop) / r;
 
-                $this.x = x;
-                ball.x = x;
-
                 if($game.isOver || started)
                     return;
+
+                $this.x = x;
+                ball.x = x;
 
                 if ($this.x < $game.width / 2)
                     xDir = -1;
@@ -125,13 +125,17 @@
             };
 
             brick.onDestroy = () => {
-                speed += 2;
+                let test = true,
+                    cnt = 0;
+                bricks.map(brick => {
+                    test = test && !brick.$alive;
+                    cnt += !brick.$alive ? 1 : 0;
+                });
 
-                let test = true;
-                bricks.map(brick => test = test && !brick.$alive)
+                if(cnt % 16 === 0)
+                    speed += 1;
 
                 if(test) {
-                    breakout.timeScale = .25;
                     setTimeout(() => {
                         endGame();
                     }, 500)
@@ -154,33 +158,29 @@
                         $this.y += inter.height;
                         yDir = 1;
                         $this.destroy();
-                        return;
                     }
 
                     if($this.y > inter.y && $w) { // collided on top
                         $this.y -= inter.height;
                         yDir = -1;
                         $this.destroy();
-                        return;
                     }
 
                     if($this.x > inter.x && $h) { // collided on left
                         $this.x -= inter.width;
                         xDir = -1;
                         $this.destroy();
-                        return;
                     }
 
                     if($this.x < inter.x && $h) { // collided on right
                         $this.x += inter.width;
                         xDir = 1;
                         $this.destroy();
-                        return;
                     }
                 }
             };
 
-            bricks = [...bricks, brick];
+            bricks = [ ...bricks, brick ];
             x++;
         }
 
@@ -195,8 +195,8 @@
                 $this.x = pad.x;
                 return;
             } else {
-                $this.x += speed * xDir * $game.deltaTime;
-                $this.y += speed * yDir * $game.deltaTime;
+                $this.x += speed * xDir;
+                $this.y += speed * yDir;
             }
 
             const w = $this.width/2, h = $this.height/2;
