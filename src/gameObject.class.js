@@ -9,6 +9,7 @@ class GameObject {
     width = 10;
     height = 10;
     pixelPerfect = true;
+    color;
 
     constructor(name, width, height, x, y, color) {
         this.$id = EzGame.randomId();
