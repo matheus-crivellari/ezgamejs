@@ -22,7 +22,6 @@
 
         spr.x = game.width  / 2;
         spr.y = game.height / 2;
-        spr.width = spr.height = 48;
 
         let xd = 1, yd = 1, spd = 2;
         spr.update = ($this, $game) => {
@@ -53,22 +52,25 @@
                 $this.y += b;
                 yd *= -1;
             }
-
         };
 
+        spr.width  = 15;
+        spr.height = 15;
+        spr.color  = '#ff0a';
         spr.render = ($this, $display) => {
             if($this.loaded) {
-                let { x, y, width: w, height: h } = $this.rect;
+                let { x, y, width: w, height: h } = $this.spriteRect;
                 $display.drawImage($this.img, x, y, w, h);
-            }
-
-            if($this.failed) {
                 Debug.render($this, $display);
             }
+
+            if($this.failed)
+                Debug.render($this, $display);
+
         };
 
         game.add(spr);
-        // game.scale(800, 600);
+        game.scale(800, 600);
 
         EzGame.start(game);
     </script>
